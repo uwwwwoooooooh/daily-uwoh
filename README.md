@@ -1,13 +1,19 @@
 # DailyUwoh 😭😭😭😭😭😭😭
 
-**Goal: To track, find, and secure my favorite Waifus across the internet.**
+**Goal: An automated "Digital Editor" that hunts, curates, and archives anime illustrations.**
+This system acts as an autonomous editor that:
+1.  **Collects**: Scrapes Twitter/X for new art from tracked artists.
+2.  **Reviews**: Uses AI (Vision) to judge if the art is "Uwoh" enough (Cute/Sexy) and flags NSFW content.
+3.  **Publishes**: Pushes the best filtered content to a Telegram Channel.
+4.  **Archives**: Saves everything to specific deduplicated storage.
 
-I need an automated hunter-seeker system that monitors artists and indexes everything instantly. If a new illustration drops, I want it found and cataloged before I even wake up.
+**Data Flow:**
+`Twitter (Source) -> Go Backend (Collector) -> AI Vision (Processor) -> Database (Storage) -> Telegram Bot (Publisher)`
 
 * **`github.com/gin-gonic/gin`**: Web framework.
-* **`gorm.io/gorm`**: ORM. It maps my complex obsession (Artists, Tags, Metadata) into **PostgreSQL** without me needing to write raw SQL.
-* **`gorm.io/driver/postgres`**: Driver to talk to the DB.
-* **`net/http` & `context`**
+* **`gorm.io/gorm`**: ORM for metadata.
+* **`gorm.io/driver/postgres`**: Database driver.
+* **`net/http` & Context**: For controlling high-concurrency scraping.
 
 
 ```text
@@ -17,7 +23,11 @@ DailyUwoh/
 ├── internal/            # Private application logic
 │   ├── config/          # Configuration management (.env loading)
 │   ├── database/        # Database connection logic
-│   └── model/           # Data entities & DB Schema
+│   ├── model/           # Data entities & DB Schema
+│   ├── processor/       # AI Image Analysis (Gemini/OpenAI)
+│   ├── publisher/       # Content Distribution (Telegram)
+│   ├── repository/      # Data Access Interfaces
+│   └── service/         # Core Business Logic (Scraping)
 ├── deployments/         # Docker & CI/CD configurations
 │   └── Dockerfile       # Docker build configuration
 ├── .gitignore           # Git ignore rules

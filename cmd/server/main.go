@@ -1,22 +1,20 @@
 package main
 
 import (
-	"context"
 	"log"
 
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/database"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 )
 
 // =================================================================================
 // ARCHITECTURE NOTES (Draft v0.1)
 //
-// System Design:
-// 1. Layered Architecture: Handler (HTTP) -> Service (Business Logic) -> Repository (Data Access).
-// 2. Concurrency: Use a Worker Pool pattern for the scraper (Producer-Consumer).
-// 3. Database: Postgres with GORM. Heavy use of JSONB for dynamic metadata.
-// 4. External: C++ Microservice via gRPC for pHash calculation (Future).
+// System Design (Digital Editor):
+// 1. Collector: Scrapes content (Twitter/Pixiv) -> Repository.
+// 2. Processor: AI Analysis (Gemini/Vision) for tagging, scoring (Uwoh logic), and NSFW.
+// 3. Storage: Postgres (JSONB Metadata) + File System/S3.
+// 4. Publisher: Telegram Bot for curated content distribution.
 // =================================================================================
 
 // ---------------------------------------------------------------------------------
@@ -29,21 +27,7 @@ import (
 // Define behavior before implementation. This makes unit testing easier (Mocking).
 // ---------------------------------------------------------------------------------
 
-// ArtworkRepository defines how we interact with the database.
-type ArtworkRepository interface {
-	Create(ctx context.Context, artwork *model.Artwork) error
-	FindByHash(ctx context.Context, hash string) (*model.Artwork, error)
-	// TODO: Add search with pagination
-}
-
-// ScraperService defines the interface for the crawler.
-// This will likely involve Goroutines and Channels.
-type ScraperService interface {
-	// Enqueue adds a URL to the scraping queue.
-	Enqueue(url string)
-	// Start launches the worker pool.
-	Start(workerCount int)
-}
+// Moved to internal/repository and internal/service
 
 // ---------------------------------------------------------------------------------
 // 4. Main Application Entry
@@ -68,12 +52,13 @@ func main() {
 	log.Println("TODO: Run database migrations...")
 
 	// Step 4: Setup Components (Dependency Injection)
-	// repo := NewPostgresArtworkRepository(db)
-	// service := NewCoreService(repo)
+	// repo := repository.NewPostgresArtworkRepository(db)
+	// ai := processor.NewGeminiProcessor(apiKey)
+	// pub := publisher.NewTelegramPublisher(botToken, channelID)
 
-	// Step 5: Setup Background Workers (The Crawler)
-	// scraper := NewScraperService()
-	// go scraper.Start(10) // Launch 10 workers in background
+	// Step 5: Setup Background Workers (The Collector)
+	// collector := service.NewCollector(repo, ai, pub)
+	// go collector.Start(10) // Launch 10 workers
 
 	// Step 6: HTTP Server (Gin)
 	// r := gin.Default()
