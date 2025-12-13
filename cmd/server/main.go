@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"gorm.io/gorm"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 )
 
 // =================================================================================
@@ -19,48 +19,8 @@ import (
 
 // ---------------------------------------------------------------------------------
 // 1. Domain Models (Data Structures)
-// TODO: Eventually move these to a separate 'models' package to avoid circular deps.
+// TODO: moved to 'model' package.
 // ---------------------------------------------------------------------------------
-
-// Artist represents a creator on platforms like Twitter/Pixiv.
-type Artist struct {
-	gorm.Model
-	Name string `json:"name"`
-
-	// SocialProfiles (JSONB): Flexible storage for platform links.
-	// Structure: {"twitter": "url", "pixiv": "url", "bluesky": "url"}
-	// Note: We use interface{} here, but in production, we might want a specific struct for type safety.
-	SocialProfiles map[string]interface{} `gorm:"type:jsonb;serializer:json"`
-
-	Artworks []Artwork // Has-Many relationship
-}
-
-// Artwork represents the core entity of the system.
-type Artwork struct {
-	gorm.Model
-	Title     string
-	FilePath  string // Local storage path or S3 Key
-	SourceURL string // Where did we scrape this from?
-
-	// PHash: The "Perceptual Hash" calculated by our C++ module.
-	// Important: We need a B-Tree index on this for Hamming Distance calculation later?
-	// Or just a standard index for exact string matching for now.
-	PHash string `gorm:"index"`
-
-	// MetaData (JSONB): Raw data from the source (likes, retweets, dimensions).
-	MetaData map[string]interface{} `gorm:"type:jsonb;serializer:json"`
-
-	ArtistID uint
-	Tags     []*Tag `gorm:"many2many:artwork_tags;"`
-}
-
-// Tag for categorization.
-// TODO: Determine if we need a 'Confidence' field in the join table for AI confidence levels.
-type Tag struct {
-	gorm.Model
-	Name     string `gorm:"uniqueIndex"`
-	Category string // e.g., "character", "series", "artist_style"
-}
 
 // ---------------------------------------------------------------------------------
 // 2. Interfaces (Contracts)
@@ -69,8 +29,8 @@ type Tag struct {
 
 // ArtworkRepository defines how we interact with the database.
 type ArtworkRepository interface {
-	Create(ctx context.Context, artwork *Artwork) error
-	FindByHash(ctx context.Context, hash string) (*Artwork, error)
+	Create(ctx context.Context, artwork *model.Artwork) error
+	FindByHash(ctx context.Context, hash string) (*model.Artwork, error)
 	// TODO: Add search with pagination
 }
 
