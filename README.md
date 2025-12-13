@@ -15,11 +15,12 @@ DailyUwoh/
 ├── cmd/
 │   └── server/          # Application entry point (main.go)
 ├── internal/            # Private application logic
-│   ├── model/           # Data entities & DB Schema (Structs)
-│   ├── repository/      # Data Access Layer (Postgres CRUD operations)
-│   ├── service/         # Business Logic (Scraping rules, C++ integration)
-│   ├── handler/         # HTTP Controllers (Gin route handlers)
-│   └── config/          # Configuration management (.env loading)
-├── deployments/         # Docker & CI/CD configurations
+│   ├── config/          # Configuration management (.env loading)
+│   ├── database/        # Database connection logic
+│   └── model/           # Data entities & DB Schema
+├── .gitignore           # Git ignore rules
+├── Dockerfile           # Docker build configuration
+├── docker-compose.yml   # Docker services setup
 ├── go.mod               # Go module dependencies
 └── README.md            # Documentation
+```
