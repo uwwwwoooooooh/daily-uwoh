@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/database"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 )
 
@@ -44,26 +46,6 @@ type ScraperService interface {
 }
 
 // ---------------------------------------------------------------------------------
-// 3. Configuration & Global State
-// ---------------------------------------------------------------------------------
-
-type Config struct {
-	DBUrl      string
-	ServerPort string
-	// TODO: Add Redis config for job queue
-	// TODO: Add gRPC address for C++ service
-}
-
-// LoadConfig reads from .env or flags.
-// Note: For now, hardcode values for quick testing.
-func LoadConfig() Config {
-	return Config{
-		DBUrl:      "host=localhost user=postgres password=mysecretpassword dbname=postgres port=5432 sslmode=disable",
-		ServerPort: ":8080",
-	}
-}
-
-// ---------------------------------------------------------------------------------
 // 4. Main Application Entry
 // ---------------------------------------------------------------------------------
 
@@ -71,13 +53,15 @@ func main() {
 	log.Println("🛠️  Initializing DailyUwoh System...")
 
 	// Step 1: Configuration
-	cfg := LoadConfig()
+	cfg := config.LoadConfig()
 	log.Printf("Loaded config. Port: %s", cfg.ServerPort)
 
 	// Step 2: Database Connection
-	// TODO: Implement GORM connection logic here.
-	// Note: Remember to set SetMaxOpenConns and SetMaxIdleConns for connection pooling.
-	// db := connectDB(cfg.DBUrl)
+	db, err := database.ConnectDB(cfg.DBUrl)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	_ = db // Keep compiler happy for now
 
 	// Step 3: Migration
 	// TODO: Run AutoMigrate for Artist, Artwork, Tag.
