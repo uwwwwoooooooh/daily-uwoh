@@ -18,8 +18,9 @@ DailyUwoh/
 │   ├── config/          # Configuration management (.env loading)
 │   ├── database/        # Database connection logic
 │   └── model/           # Data entities & DB Schema
+├── deployments/         # Docker & CI/CD configurations
+│   └── Dockerfile       # Docker build configuration
 ├── .gitignore           # Git ignore rules
-├── Dockerfile           # Docker build configuration
 ├── docker-compose.yml   # Docker services setup
 ├── go.mod               # Go module dependencies
 └── README.md            # Documentation
