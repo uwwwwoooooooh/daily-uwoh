@@ -5,6 +5,7 @@ import (
 
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/database"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/router"
 )
 
 // =================================================================================
@@ -61,8 +62,11 @@ func main() {
 	// go collector.Start(10) // Launch 10 workers
 
 	// Step 6: HTTP Server (Gin)
-	// r := gin.Default()
-	// setupRoutes(r)
+	r := router.NewRouter()
+	_ = r
+
+	// Start server (blocking)
+	// r.Run(":" + cfg.ServerPort)
 
 	// Step 7: Graceful Shutdown
 	// TODO: Listen for OS signals (SIGINT, SIGTERM) to close DB connections and stop workers safely.
@@ -78,10 +82,3 @@ func main() {
 // ---------------------------------------------------------------------------------
 // 5. Placeholders (To be implemented)
 // ---------------------------------------------------------------------------------
-
-func setupRoutes(r interface{}) {
-	// TODO: Define API groups
-	// v1 := r.Group("/api/v1")
-	// v1.POST("/upload", handleUpload)
-	// v1.GET("/feed", handleFeed)
-}
