@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
+	"gorm.io/gorm"
 )
 
 type UserRepository interface {
@@ -12,19 +13,21 @@ type UserRepository interface {
 }
 
 type postgresUserRepository struct {
-	// db *gorm.DB
+	db *gorm.DB
 }
 
-func NewPostgresUserRepository() UserRepository {
-	return &postgresUserRepository{}
+func NewPostgresUserRepository(db *gorm.DB) UserRepository {
+	return &postgresUserRepository{db: db}
 }
 
 func (r *postgresUserRepository) Create(ctx context.Context, u *model.User) error {
-	// TODO
-	return nil
+	return r.db.WithContext(ctx).Create(u).Error
 }
 
 func (r *postgresUserRepository) FindByEmail(ctx context.Context, email string) (*model.User, error) {
-	// TODO
-	return nil, nil
+	var user model.User
+	if err := r.db.WithContext(ctx).Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

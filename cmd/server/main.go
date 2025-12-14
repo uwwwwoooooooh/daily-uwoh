@@ -5,7 +5,11 @@ import (
 
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/database"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/handler"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/router"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/service"
 )
 
 // =================================================================================
@@ -49,20 +53,21 @@ func main() {
 	_ = db // Keep compiler happy for now
 
 	// Step 3: Migration
-	// TODO: Run AutoMigrate for Artist, Artwork, Tag.
-	log.Println("TODO: Run database migrations...")
+	if err := db.AutoMigrate(&model.User{}); err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
 
 	// Step 4: Setup Components (Dependency Injection)
-	// repo := repository.NewPostgresArtworkRepository(db)
-	// ai := processor.NewGeminiProcessor(apiKey)
-	// pub := publisher.NewTelegramPublisher(botToken, channelID)
+	userRepo := repository.NewPostgresUserRepository(db)
+	authService := service.NewAuthService(userRepo, cfg)
+	authHandler := handler.NewAuthHandler(authService)
 
 	// Step 5: Setup Background Workers (The Collector)
 	// collector := service.NewCollector(repo, ai, pub)
 	// go collector.Start(10) // Launch 10 workers
 
 	// Step 6: HTTP Server (Gin)
-	r := router.NewRouter()
+	r := router.NewRouter(authHandler)
 	_ = r
 
 	// Start server (blocking)

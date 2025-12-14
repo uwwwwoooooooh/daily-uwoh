@@ -1,10 +1,35 @@
 package middleware
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+	"strings"
 
-func AuthMiddleware() gin.HandlerFunc {
+	"github.com/gin-gonic/gin"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
+)
+
+func AuthMiddleware(cfg config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// TODO: check jwt
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is required"})
+			return
+		}
+
+		bearerToken := strings.Split(authHeader, " ")
+		if len(bearerToken) != 2 || strings.ToLower(bearerToken[0]) != "bearer" {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid authorization header format"})
+			return
+		}
+
+		claims, err := utils.ValidateToken(bearerToken[1], cfg.JWTSecret)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+			return
+		}
+
+		c.Set("userID", claims.UserID)
 		c.Next()
 	}
 }

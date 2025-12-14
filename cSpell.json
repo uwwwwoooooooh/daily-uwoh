@@ -10,6 +10,7 @@
         "dailyuwoh",
         "Pixiv",
         "dbname",
-        "sslmode"
+        "sslmode",
+        "dylib"
     ]
 }
