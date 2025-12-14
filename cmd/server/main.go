@@ -67,7 +67,7 @@ func main() {
 	// go collector.Start(10) // Launch 10 workers
 
 	// Step 6: HTTP Server (Gin)
-	r := router.NewRouter(authHandler)
+	r := router.NewRouter(authHandler, cfg)
 	_ = r
 
 	// Start server (blocking)

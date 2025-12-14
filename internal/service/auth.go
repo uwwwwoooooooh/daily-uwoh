@@ -15,6 +15,7 @@ import (
 type AuthService interface {
 	Register(ctx context.Context, email, password string) (*model.User, error)
 	Login(ctx context.Context, email, password string) (string, error)
+	GetMe(ctx context.Context, userID uint) (*model.User, error)
 }
 
 type authService struct {
@@ -63,4 +64,8 @@ func (s *authService) Login(ctx context.Context, email, password string) (string
 	}
 
 	return token, nil
+}
+
+func (s *authService) GetMe(ctx context.Context, userID uint) (*model.User, error) {
+	return s.repo.FindByID(ctx, userID)
 }
