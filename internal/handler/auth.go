@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/service"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
 type AuthHandler struct {
@@ -23,17 +24,17 @@ type registerRequest struct {
 func (h *AuthHandler) Register(c *gin.Context) {
 	var req registerRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	user, err := h.service.Register(c.Request.Context(), req.Email, req.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusCreated, user)
+	utils.SendSuccess(c, http.StatusCreated, user)
 }
 
 type loginRequest struct {
@@ -44,32 +45,32 @@ type loginRequest struct {
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req loginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.SendError(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	token, err := h.service.Login(c.Request.Context(), req.Email, req.Password)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		utils.SendError(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	utils.SendSuccess(c, http.StatusOK, gin.H{"token": token})
 }
 
 func (h *AuthHandler) Me(c *gin.Context) {
 	// The userID is set in the context by the AuthMiddleware
 	userID, exists := c.Get("userID")
 	if !exists {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		utils.SendError(c, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
 	user, err := h.service.GetMe(c.Request.Context(), userID.(uint))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		utils.SendError(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	utils.SendSuccess(c, http.StatusOK, user)
 }

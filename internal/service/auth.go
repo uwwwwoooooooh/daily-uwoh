@@ -58,7 +58,7 @@ func (s *authService) Login(ctx context.Context, email, password string) (string
 		return "", errors.New("invalid credentials")
 	}
 
-	token, err := utils.GenerateToken(user.ID, s.config.JWTSecret)
+	token, err := utils.GenerateToken(user.ID, s.config.JWTSecret, s.config.JWTExpirationHours)
 	if err != nil {
 		return "", err
 	}

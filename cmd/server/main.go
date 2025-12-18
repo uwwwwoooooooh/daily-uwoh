@@ -45,6 +45,10 @@ func main() {
 	cfg := config.LoadConfig()
 	log.Printf("Loaded config. Port: %s", cfg.ServerPort)
 
+	if cfg.JWTSecret == "secret" {
+		log.Println("⚠️  WARNING: Using default JWT secret 'secret'. This is insecure for production!")
+	}
+
 	// Step 2: Database Connection
 	db, err := database.ConnectDB(cfg.DBUrl)
 	if err != nil {
