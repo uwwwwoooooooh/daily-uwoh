@@ -9,7 +9,9 @@ import (
 
 // NewRouter initializes the Gin engine and defines routes
 func NewRouter(authHandler *handler.AuthHandler, cfg config.Config) *gin.Engine {
-	r := gin.Default()
+	r := gin.New()
+	r.Use(middleware.Logger())
+	r.Use(middleware.Recovery())
 
 	auth := r.Group("/auth")
 	{
