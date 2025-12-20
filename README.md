@@ -21,13 +21,14 @@ DailyUwoh/
 ├── cmd/
 │   └── server/          # Application entry point (main.go)
 ├── internal/            # Private application logic
+│   ├── api/             # API Layer (Handler, Router, Middleware)
 │   ├── config/          # Configuration management (.env loading)
-│   ├── database/        # Database connection logic
-│   ├── model/           # Data entities & DB Schema
+│   ├── db/              # Database (Connection, Migration, Queries, SQLC)
+│   ├── model/           # Domain Models
 │   ├── processor/       # AI Image Analysis (Gemini/OpenAI)
 │   ├── publisher/       # Content Distribution (Telegram)
-│   ├── repository/      # Data Access Interfaces
-│   └── service/         # Core Business Logic (Scraping)
+│   ├── repository/      # Data Access Layer (Repository Pattern)
+│   └── service/         # Core Business Logic
 ├── deployments/         # Docker & CI/CD configurations
 │   └── Dockerfile       # Docker build configuration
 ├── .gitignore           # Git ignore rules

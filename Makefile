@@ -24,3 +24,17 @@ clean:
 tidy:
 	@echo "Tidying modules..."
 	@go mod tidy
+
+# Database
+DB_URL=postgres://user:password@localhost:5432/dailyuwoh?sslmode=disable
+
+sqlc:
+	sqlc generate
+
+migrateup:
+	migrate -path internal/db/migration -database "$(DB_URL)" -verbose up
+
+migratedown:
+	migrate -path internal/db/migration -database "$(DB_URL)" -verbose down
+
+.PHONY: sqlc migrateup migratedown

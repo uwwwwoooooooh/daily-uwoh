@@ -8,15 +8,20 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc"
 )
 
-var testQueries *Queries
+const (
+	dbSource = "postgresql://postgres:shiratama@localhost:5432/simple_bank?sslmode=disable"
+)
+
+var testQueries *sqlc.Queries
 var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	var err error
 	// TODO: Replace with your actual database DSN or load from env
-	dsn := "postgres://user:password@localhost:5432/dbname?sslmode=disable"
+	dsn := dbSource
 	if envDSN := os.Getenv("DATABASE_URL"); envDSN != "" {
 		dsn = envDSN
 	}
@@ -34,7 +39,7 @@ func TestMain(m *testing.M) {
 		log.Fatalf("cannot ping db: %v", err)
 	}
 
-	testQueries = New(testDB)
+	testQueries = sqlc.New(testDB)
 
 	os.Exit(m.Run())
 }

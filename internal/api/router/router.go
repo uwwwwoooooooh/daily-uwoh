@@ -2,9 +2,9 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/api/handler"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/api/middleware"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/handler"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/middleware"
 )
 
 // NewRouter initializes the Gin engine and defines routes
