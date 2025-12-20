@@ -11,13 +11,17 @@ import (
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc"
 )
 
+const (
+	dbSource = "postgresql://postgres:shiratama@localhost:5432/simple_bank?sslmode=disable"
+)
+
 var testQueries *sqlc.Queries
 var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	var err error
 	// TODO: Replace with your actual database DSN or load from env
-	dsn := "postgres://user:password@localhost:5432/dbname?sslmode=disable"
+	dsn := dbSource
 	if envDSN := os.Getenv("DATABASE_URL"); envDSN != "" {
 		dsn = envDSN
 	}
