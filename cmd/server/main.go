@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/api/handler"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/api/router"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/database"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/handler"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/db"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/router"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/service"
 )
 
@@ -49,7 +49,7 @@ func main() {
 	}
 
 	// Step 2: Database Connection
-	db, err := database.ConnectDB(cfg.DBUrl)
+	db, err := db.ConnectDB(cfg.DBUrl)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

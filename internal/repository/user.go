@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/db"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 )
 
@@ -19,7 +19,7 @@ type UserRepository interface {
 // Go allows splitting methods across files in the same package.
 
 func (s *SQLStore) CreateUser(ctx context.Context, u *model.User) error {
-	params := db.InsertUserParams{
+	params := sqlc.InsertUserParams{
 		Email:    u.Email,
 		Password: u.Password,
 	}
