@@ -17,34 +17,6 @@ SET meta_data = $2,
     updated_at = NOW()
 WHERE id = $1;
 
--- name: InsertArtist :one
-INSERT INTO artists (
-  name, social_profiles
-) VALUES (
-  $1, $2
-)
-RETURNING *;
-
--- name: GetArtist :one
-SELECT * FROM artists
-WHERE id = $1 LIMIT 1;
-
 -- name: FindByHash :one
 SELECT * FROM artworks
 WHERE p_hash = $1 LIMIT 1;
-
--- name: InsertUser :one
-INSERT INTO users (
-  email, password
-) VALUES (
-  $1, $2
-)
-RETURNING *;
-
--- name: GetUserByEmail :one
-SELECT * FROM users
-WHERE email = $1 LIMIT 1;
-
--- name: GetUserByID :one
-SELECT * FROM users
-WHERE id = $1 LIMIT 1;

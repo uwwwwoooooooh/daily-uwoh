@@ -8,9 +8,10 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc"
 )
 
-var testQueries *Queries
+var testQueries *sqlc.Queries
 var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
@@ -34,7 +35,7 @@ func TestMain(m *testing.M) {
 		log.Fatalf("cannot ping db: %v", err)
 	}
 
-	testQueries = New(testDB)
+	testQueries = sqlc.New(testDB)
 
 	os.Exit(m.Run())
 }

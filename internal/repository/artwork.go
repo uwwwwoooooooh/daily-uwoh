@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/db"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 )
 
@@ -14,7 +14,7 @@ func (s *SQLStore) CreateArtwork(ctx context.Context, artwork *model.Artwork) er
 		return err
 	}
 
-	params := db.InsertArtworkParams{
+	params := sqlc.InsertArtworkParams{
 		Title:     artwork.Title,
 		FilePath:  artwork.FilePath,
 		SourceUrl: artwork.SourceURL,
