@@ -11,8 +11,8 @@ This system acts as an autonomous editor that:
 `Twitter (Source) -> Go Backend (Collector) -> AI Vision (Processor) -> Database (Storage) -> Telegram Bot (Publisher)`
 
 * **`github.com/gin-gonic/gin`**: Web framework.
-* **`gorm.io/gorm`**: ORM for metadata.
-* **`gorm.io/driver/postgres`**: Database driver.
+* **`github.com/jackc/pgx/v5`**: PostgreSQL driver and toolkit.
+* **`github.com/sqlc-dev/sqlc`**: Type-safe SQL compiler for Go.
 * **`net/http` & Context**: For controlling high-concurrency scraping.
 
 

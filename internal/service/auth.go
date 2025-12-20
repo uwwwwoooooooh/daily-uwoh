@@ -41,7 +41,7 @@ func (s *authService) Register(ctx context.Context, email, password string) (*mo
 		Password: string(hashedPassword),
 	}
 
-	if err := s.repo.Create(ctx, user); err != nil {
+	if err := s.repo.CreateUser(ctx, user); err != nil {
 		return nil, err
 	}
 

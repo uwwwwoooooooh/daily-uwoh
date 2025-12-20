@@ -6,7 +6,6 @@ import (
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/database"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/handler"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/router"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/service"
@@ -57,13 +56,15 @@ func main() {
 	_ = db // Keep compiler happy for now
 
 	// Step 3: Migration
-	if err := db.AutoMigrate(&model.User{}); err != nil {
-		log.Fatalf("Failed to run migrations: %v", err)
-	}
+	// TODO: Run schema migration using 'migrate' tool or sqlc.
+	// if err := db.AutoMigrate(&model.User{}); err != nil {
+	// 	log.Fatalf("Failed to run migrations: %v", err)
+	// }
 
 	// Step 4: Setup Components (Dependency Injection)
-	userRepo := repository.NewPostgresUserRepository(db)
-	authService := service.NewAuthService(userRepo, cfg)
+	store := repository.NewStore(db)
+	// Store implements UserRepository, so we can pass it directly.
+	authService := service.NewAuthService(store, cfg)
 	authHandler := handler.NewAuthHandler(authService)
 
 	// Step 5: Setup Background Workers (The Collector)
