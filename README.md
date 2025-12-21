@@ -2,7 +2,7 @@
 
 **Goal: An automated "Digital Editor" that hunts, curates, and archives anime illustrations.**
 This system acts as an autonomous editor that:
-1.  **Collects**: Scrapes Twitter/X for new art from tracked artists.
+1.  **Collects**: Scrapes Twitter for new art from tracked artists.
 2.  **Reviews**: Uses AI (Vision) to judge if the art is "Uwoh" enough (Cute/Sexy) and flags NSFW content.
 3.  **Publishes**: Pushes the best filtered content to a Telegram Channel.
 4.  **Archives**: Saves everything to specific deduplicated storage.
