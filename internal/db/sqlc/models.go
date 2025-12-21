@@ -8,46 +8,46 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type Artist struct {
-	ID             int64
-	Name           string
-	SocialProfiles []byte
-	CreatedAt      pgtype.Timestamptz
-	UpdatedAt      pgtype.Timestamptz
-	DeletedAt      pgtype.Timestamptz
+type Artists struct {
+	ID             int64              `json:"id"`
+	Name           string             `json:"name"`
+	SocialProfiles []byte             `json:"social_profiles"`
+	CreatedAt      pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt      pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt      pgtype.Timestamptz `json:"deleted_at"`
 }
 
-type Artwork struct {
-	ID        int64
-	Title     string
-	FilePath  string
-	SourceUrl string
-	PHash     string
-	MetaData  []byte
-	ArtistID  int64
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
-	DeletedAt pgtype.Timestamptz
+type ArtworkTags struct {
+	ArtworkID int64 `json:"artwork_id"`
+	TagID     int64 `json:"tag_id"`
 }
 
-type ArtworkTag struct {
-	ArtworkID int64
-	TagID     int64
+type Artworks struct {
+	ID        int64              `json:"id"`
+	Title     string             `json:"title"`
+	FilePath  string             `json:"file_path"`
+	SourceUrl string             `json:"source_url"`
+	PHash     string             `json:"p_hash"`
+	MetaData  []byte             `json:"meta_data"`
+	ArtistID  int64              `json:"artist_id"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt pgtype.Timestamptz `json:"deleted_at"`
 }
 
-type Tag struct {
-	ID        int64
-	Name      string
-	Category  string
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
-	DeletedAt pgtype.Timestamptz
+type Tags struct {
+	ID        int64              `json:"id"`
+	Name      string             `json:"name"`
+	Category  string             `json:"category"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
+	DeletedAt pgtype.Timestamptz `json:"deleted_at"`
 }
 
-type User struct {
-	ID        int64
-	Email     string
-	Password  string
-	CreatedAt pgtype.Timestamptz
-	UpdatedAt pgtype.Timestamptz
+type Users struct {
+	ID        int64              `json:"id"`
+	Email     string             `json:"email"`
+	Password  string             `json:"password"`
+	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
 }
