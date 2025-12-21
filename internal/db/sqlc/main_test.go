@@ -8,10 +8,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-)
-
-const (
-	dbSource = "postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 )
 
 var testQueries *Queries
@@ -19,7 +16,7 @@ var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	var err error
-	dsn := dbSource
+	dsn := config.DefaultDBURL
 	if envDSN := os.Getenv("DATABASE_URL"); envDSN != "" {
 		dsn = envDSN
 	}

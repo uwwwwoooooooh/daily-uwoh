@@ -8,6 +8,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+const (
+	DefaultDBURL = "postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable"
+)
+
 // Config holds all configuration for the application
 type Config struct {
 	DBUrl              string
@@ -23,7 +27,7 @@ func LoadConfig() Config {
 	}
 
 	return Config{
-		DBUrl:              getEnv("DATABASE_URL", "host=localhost user=postgres password=postgres dbname=dailyuwoh port=5432 sslmode=disable"),
+		DBUrl:              getEnv("DATABASE_URL", DefaultDBURL),
 		ServerPort:         getEnv("SERVER_PORT", ":8080"),
 		JWTSecret:          getEnv("JWT_SECRET", "secret"),
 		JWTExpirationHours: getEnvAsInt("JWT_EXPIRATION_HOURS", 24),
