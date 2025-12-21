@@ -26,10 +26,16 @@ tidy:
 	@go mod tidy
 
 # Database
-DB_URL=postgres://user:password@localhost:5432/dailyuwoh?sslmode=disable
+DB_URL=postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable
 
 sqlc:
 	sqlc generate
+
+createdb:
+	docker exec -it postgres18 createdb --username=postgres --owner=postgres dailyuwoh
+
+dropdb:
+	docker exec -it postgres18 dropdb dailyuwoh
 
 migrateup:
 	migrate -path internal/db/migration -database "$(DB_URL)" -verbose up
@@ -37,4 +43,4 @@ migrateup:
 migratedown:
 	migrate -path internal/db/migration -database "$(DB_URL)" -verbose down
 
-.PHONY: sqlc migrateup migratedown
+.PHONY: sqlc migrateup migratedown createdb dropdb
