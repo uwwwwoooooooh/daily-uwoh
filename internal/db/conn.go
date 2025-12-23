@@ -27,6 +27,6 @@ func ConnectDB(dsn string) (*pgxpool.Pool, error) {
 		return nil, err
 	}
 
-	log.Println("✅ Connected to Database")
+	log.Println("Connected to Database")
 	return pool, nil
 }

@@ -1,27 +1,24 @@
 ### Use REST Client
-### Create a new artwork
-POST http://localhost:8080/artworks
-content-type: application/json
+### Auth Register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
 
 {
-    "title": "Sunset over the hills",
-    "file_path": "storage/artworks/sunset_123.jpg",
-    "source_url": "https://artstation.com/artwork/sunset-hills",
-    "p_hash": "bf62c82e1a3f4b5d",
-    "meta_data": {},
-    "artist_id": 1
+    "email": "test@example.com",
+    "password": "password123"
 }
 
-### Find artwork by perceptual hash
-GET http://localhost:8080/artworks/hash/bf62c82e1a3f4b5d
-
-### List all artworks by a specific artist
-GET http://localhost:8080/artists/1/artworks
-
-### Update artwork metadata
-PATCH http://localhost:8080/artworks/1/metadata
-content-type: application/json
+### Auth Login
+# @name login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
 
 {
-    "meta_data": {"tags": ["landscape", "nature", "sunset"]}
+    "email": "test@example.com",
+    "password": "password123"
 }
+
+### Auth Me
+@authToken = {{login.response.body.token}}
+GET http://localhost:8080/auth/me
+Authorization: Bearer {{authToken}}
