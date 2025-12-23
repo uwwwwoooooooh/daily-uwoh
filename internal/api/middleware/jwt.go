@@ -5,11 +5,10 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
-func AuthMiddleware(cfg config.Config) gin.HandlerFunc {
+func AuthMiddleware(cfg utils.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {

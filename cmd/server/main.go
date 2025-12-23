@@ -5,16 +5,19 @@ import (
 
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/api/handler"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/api/router"
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/db"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/service"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
 func main() {
 	log.Println("Initializing DailyUwoh System...")
 
-	cfg := config.LoadConfig()
+	cfg, err := utils.LoadConfig(".")
+	if err != nil {
+		log.Fatalf("cannot load config: %v", err)
+	}
 	log.Printf("Loaded config. Port: %s", cfg.ServerPort)
 
 	if cfg.JWTSecret == "secret" {

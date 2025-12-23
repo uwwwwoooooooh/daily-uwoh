@@ -5,7 +5,6 @@ import (
 
 	"errors"
 
-	"github.com/uwwwwoooooooh/daily-uwoh/internal/config"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
@@ -20,10 +19,10 @@ type AuthService interface {
 
 type authService struct {
 	repo   repository.UserRepository
-	config config.Config
+	config utils.Config
 }
 
-func NewAuthService(repo repository.UserRepository, cfg config.Config) AuthService {
+func NewAuthService(repo repository.UserRepository, cfg utils.Config) AuthService {
 	return &authService{
 		repo:   repo,
 		config: cfg,

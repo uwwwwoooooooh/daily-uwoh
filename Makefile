@@ -1,6 +1,6 @@
 APP_NAME=daily-uwoh
 CMD_PATH=./cmd/server
-DB_URL=postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable
+include app.env
 
 all: build
 
@@ -29,10 +29,10 @@ dropdb:
 	docker exec -it postgres18 dropdb dailyuwoh
 
 migrateup:
-	migrate -path internal/db/migration -database "$(DB_URL)" -verbose up
+	migrate -path internal/db/migration -database "$(DATABASE_URL)" -verbose up
 
 migratedown:
-	migrate -path internal/db/migration -database "$(DB_URL)" -verbose down
+	migrate -path internal/db/migration -database "$(DATABASE_URL)" -verbose down
 
 server:
 	go run $(CMD_PATH)

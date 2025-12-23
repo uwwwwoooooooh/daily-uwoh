@@ -8,10 +8,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-)
-
-const (
-	dbSource = "postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
 var testQueries *Queries
@@ -19,15 +16,15 @@ var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
 	var err error
-	dsn := dbSource
-	if envDSN := os.Getenv("DATABASE_URL"); envDSN != "" {
-		dsn = envDSN
+	cfg, err := utils.LoadConfig("../../..")
+	if err != nil {
+		log.Fatal("cannot load config:", err)
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	testDB, err = pgxpool.New(ctx, dsn)
+	testDB, err = pgxpool.New(ctx, cfg.DBUrl)
 	if err != nil {
 		log.Fatalf("cannot connect to db: %v", err)
 	}
