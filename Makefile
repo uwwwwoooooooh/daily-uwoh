@@ -1,5 +1,3 @@
-.PHONY: all build run test clean tidy
-
 APP_NAME=daily-uwoh
 CMD_PATH=./cmd/server
 DB_URL=postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable
@@ -7,24 +5,19 @@ DB_URL=postgresql://postgres:shiratama@localhost:5432/dailyuwoh?sslmode=disable
 all: build
 
 build:
-	@echo "Building $(APP_NAME)..."
-	@go build -o bin/server.exe $(CMD_PATH)
+	go build -o bin/server.exe $(CMD_PATH)
 
 run:
-	@echo "Running $(APP_NAME)..."
-	@go run $(CMD_PATH)
+	go run $(CMD_PATH)
 
 test:
-	@echo "Running tests..."
-	@go test ./... -v
+	go test ./... -v
 
 clean:
-	@echo "Cleaning up..."
-	@if exist bin rmdir /s /q bin
+	if exist bin rmdir /s /q bin
 
 tidy:
-	@echo "Tidying modules..."
-	@go mod tidy
+	go mod tidy
 
 sqlc:
 	sqlc generate
@@ -44,4 +37,4 @@ migratedown:
 server:
 	go run $(CMD_PATH)
 
-.PHONY: sqlc migrateup migratedown createdb dropdb
+.PHONY: all build run test clean tidy sqlc createdb dropdb migrateup migratedown server
