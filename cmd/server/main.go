@@ -37,6 +37,8 @@ func main() {
 
 	r := router.NewRouter(authHandler, cfg)
 
+	r.SetTrustedProxies(nil)
+
 	log.Printf("Server running on port %s", cfg.ServerPort)
 	if err := r.Run(":" + cfg.ServerPort); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
