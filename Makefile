@@ -5,7 +5,7 @@ include app.env
 all: build
 
 build:
-	go build -o bin/server.exe $(CMD_PATH)
+	go build -o bin/$(APP_NAME) $(CMD_PATH)
 
 run:
 	go run $(CMD_PATH)
@@ -14,7 +14,7 @@ test:
 	go test ./... -v
 
 clean:
-	if exist bin rmdir /s /q bin
+	rm -rf bin
 
 tidy:
 	go mod tidy
