@@ -24,7 +24,7 @@ func (s *SQLStore) CreateUser(ctx context.Context, u *model.User) error {
 		Password: u.Password,
 	}
 
-	user, err := s.Queries.InsertUser(ctx, params)
+	user, err := s.InsertUser(ctx, params)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func (s *SQLStore) CreateUser(ctx context.Context, u *model.User) error {
 }
 
 func (s *SQLStore) FindByEmail(ctx context.Context, email string) (*model.User, error) {
-	user, err := s.Queries.GetUserByEmail(ctx, email)
+	user, err := s.GetUserByEmail(ctx, email)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (s *SQLStore) FindByEmail(ctx context.Context, email string) (*model.User, 
 }
 
 func (s *SQLStore) FindByID(ctx context.Context, id uint) (*model.User, error) {
-	user, err := s.Queries.GetUserByID(ctx, int64(id))
+	user, err := s.GetUserByID(ctx, int64(id))
 	if err != nil {
 		return nil, err
 	}

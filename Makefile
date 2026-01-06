@@ -37,4 +37,7 @@ migratedown:
 server:
 	go run $(CMD_PATH)
 
-.PHONY: all build run test clean tidy sqlc createdb dropdb migrateup migratedown server
+mock:
+	mockgen -package mockdb -destination internal/db/mock/store.go github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc Store
+
+.PHONY: all build run test clean tidy sqlc createdb dropdb migrateup migratedown server mock

@@ -23,7 +23,7 @@ func (s *SQLStore) CreateArtwork(ctx context.Context, artwork *model.Artwork) er
 		ArtistID:  int64(artwork.ArtistID),
 	}
 
-	createdArtwork, err := s.Queries.InsertArtwork(ctx, params)
+	createdArtwork, err := s.InsertArtwork(ctx, params)
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func (s *SQLStore) CreateArtwork(ctx context.Context, artwork *model.Artwork) er
 }
 
 func (s *SQLStore) FindByHash(ctx context.Context, hash string) (*model.Artwork, error) {
-	artwork, err := s.Queries.FindByHash(ctx, hash)
+	artwork, err := s.Store.FindByHash(ctx, hash)
 	if err != nil {
 		return nil, err
 	}
