@@ -8,7 +8,6 @@ import (
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService interface {
@@ -30,14 +29,14 @@ func NewAuthService(repo repository.UserRepository, cfg utils.Config) AuthServic
 }
 
 func (s *authService) Register(ctx context.Context, email, password string) (*model.User, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	hashedPassword, err := utils.HashPassword(password)
 	if err != nil {
 		return nil, err
 	}
 
 	user := &model.User{
 		Email:    email,
-		Password: string(hashedPassword),
+		Password: hashedPassword,
 	}
 
 	if err := s.repo.CreateUser(ctx, user); err != nil {
@@ -53,7 +52,7 @@ func (s *authService) Login(ctx context.Context, email, password string) (string
 		return "", errors.New("invalid credentials")
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+	if err := utils.CheckPassword(password, user.Password); err != nil {
 		return "", errors.New("invalid credentials")
 	}
 

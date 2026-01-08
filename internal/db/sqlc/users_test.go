@@ -7,13 +7,17 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
 func createRandomUser(t *testing.T) Users {
 	email := fmt.Sprintf("user_%d@example.com", time.Now().UnixNano())
+	hashedPassword, err := utils.HashPassword("secret_password")
+	require.NoError(t, err)
+
 	arg := InsertUserParams{
 		Email:    email,
-		Password: "secret_password", // In a real application, this should be a hashed password
+		Password: hashedPassword,
 	}
 
 	user, err := testQueries.InsertUser(context.Background(), arg)

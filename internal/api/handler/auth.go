@@ -34,7 +34,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 
-	utils.SendSuccess(c, http.StatusCreated, user)
+	utils.SendSuccess(c, http.StatusCreated, user.ToResponse())
 }
 
 type loginRequest struct {
@@ -72,5 +72,5 @@ func (h *AuthHandler) Me(c *gin.Context) {
 		return
 	}
 
-	utils.SendSuccess(c, http.StatusOK, user)
+	utils.SendSuccess(c, http.StatusOK, user.ToResponse())
 }

@@ -2,7 +2,6 @@ package model
 
 import "time"
 
-// Artist represents a creator on platforms like Twitter/Pixiv.
 type Artist struct {
 	ID             uint                   `json:"id"`
 	Name           string                 `json:"name"`

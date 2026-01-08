@@ -2,7 +2,6 @@ package model
 
 import "time"
 
-// Artwork represents the core entity of the system.
 type Artwork struct {
 	ID        uint                   `json:"id"`
 	Title     string                 `json:"title"`
