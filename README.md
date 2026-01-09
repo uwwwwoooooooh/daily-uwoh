@@ -34,6 +34,7 @@ DailyUwoh/
 │   ├── publisher/       # Content Distribution (Telegram)
 │   ├── repository/      # Data Access Layer (Repository Pattern)
 │   ├── service/         # Core Business Logic
+│   ├── token/           # Token Management (PASETO)
 │   └── utils/           # Utilities & Config (.env loading, error handling)
 ├── deployments/         # Docker & CI/CD configurations
 │   └── Dockerfile       # Docker build configuration

@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"errors"
 
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/model"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/token"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
@@ -17,14 +19,16 @@ type AuthService interface {
 }
 
 type authService struct {
-	repo   repository.UserRepository
-	config utils.Config
+	repo       repository.UserRepository
+	tokenMaker token.TokenMaker
+	config     utils.Config
 }
 
-func NewAuthService(repo repository.UserRepository, cfg utils.Config) AuthService {
+func NewAuthService(repo repository.UserRepository, tokenMaker token.TokenMaker, cfg utils.Config) AuthService {
 	return &authService{
-		repo:   repo,
-		config: cfg,
+		repo:       repo,
+		tokenMaker: tokenMaker,
+		config:     cfg,
 	}
 }
 
@@ -56,7 +60,7 @@ func (s *authService) Login(ctx context.Context, email, password string) (string
 		return "", errors.New("invalid credentials")
 	}
 
-	token, err := utils.GenerateToken(user.ID, s.config.JWTSecret, s.config.JWTExpirationHours)
+	token, _, err := s.tokenMaker.CreateToken(user.ID, time.Duration(s.config.AccessTokenDuration)*time.Hour)
 	if err != nil {
 		return "", err
 	}

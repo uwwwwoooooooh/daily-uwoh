@@ -5,10 +5,11 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/token"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
-func AuthMiddleware(cfg utils.Config) gin.HandlerFunc {
+func AuthMiddleware(tokenMaker token.TokenMaker) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
@@ -22,13 +23,13 @@ func AuthMiddleware(cfg utils.Config) gin.HandlerFunc {
 			return
 		}
 
-		claims, err := utils.ValidateToken(bearerToken[1], cfg.JWTSecret)
+		payload, err := tokenMaker.VerifyToken(bearerToken[1])
 		if err != nil {
 			utils.SendError(c, http.StatusUnauthorized, "Invalid or expired token")
 			return
 		}
 
-		c.Set("userID", claims.UserID)
+		c.Set("userID", payload.ID)
 		c.Next()
 	}
 }

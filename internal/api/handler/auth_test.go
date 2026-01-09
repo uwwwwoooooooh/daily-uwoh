@@ -20,6 +20,7 @@ import (
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/repository"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/service"
+	"github.com/uwwwwoooooooh/daily-uwoh/internal/token"
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
@@ -133,11 +134,14 @@ func TestLogin(t *testing.T) {
 			}
 
 			config := utils.Config{
-				JWTSecret:          "secret_key_for_testing_1234567890",
-				JWTExpirationHours: 24,
+				TokenSymmetricKey:   "12345678901234567890123456789012",
+				AccessTokenDuration: 24,
 			}
 
-			authService := service.NewAuthService(sqlStore, config)
+			tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
+			require.NoError(t, err)
+
+			authService := service.NewAuthService(sqlStore, tokenMaker, config)
 			authHandler := handler.NewAuthHandler(authService)
 
 			// Setup Router

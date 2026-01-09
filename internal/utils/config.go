@@ -8,10 +8,10 @@ import (
 
 // Config holds all configuration for the application
 type Config struct {
-	DBUrl              string `mapstructure:"DATABASE_URL"`
-	ServerPort         string `mapstructure:"SERVER_PORT"`
-	JWTSecret          string `mapstructure:"JWT_SECRET"`
-	JWTExpirationHours int    `mapstructure:"JWT_EXPIRATION_HOURS"`
+	DBUrl               string `mapstructure:"DATABASE_URL"`
+	ServerPort          string `mapstructure:"SERVER_PORT"`
+	TokenSymmetricKey   string `mapstructure:"TOKEN_SYMMETRIC_KEY"`
+	AccessTokenDuration int    `mapstructure:"ACCESS_TOKEN_DURATION"`
 }
 
 // LoadConfig reads configuration from .env file or environment variables
