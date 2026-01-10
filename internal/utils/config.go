@@ -2,16 +2,18 @@ package utils
 
 import (
 	"log"
+	"time"
 
 	"github.com/spf13/viper"
 )
 
 // Config holds all configuration for the application
 type Config struct {
-	DBUrl               string `mapstructure:"DATABASE_URL"`
-	ServerPort          string `mapstructure:"SERVER_PORT"`
-	TokenSymmetricKey   string `mapstructure:"TOKEN_SYMMETRIC_KEY"`
-	AccessTokenDuration int    `mapstructure:"ACCESS_TOKEN_DURATION"`
+	DBUrl                string        `mapstructure:"DATABASE_URL"`
+	ServerPort           string        `mapstructure:"SERVER_PORT"`
+	TokenSymmetricKey    string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
+	AccessTokenDuration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
+	RefreshTokenDuration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
 }
 
 // LoadConfig reads configuration from .env file or environment variables

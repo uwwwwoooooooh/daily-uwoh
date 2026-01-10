@@ -29,7 +29,7 @@ func AuthMiddleware(tokenMaker token.TokenMaker) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("userID", payload.ID)
+		c.Set("userID", payload.UserID)
 		c.Next()
 	}
 }

@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"time"
 
 	"errors"
 
@@ -12,9 +11,14 @@ import (
 	"github.com/uwwwwoooooooh/daily-uwoh/internal/utils"
 )
 
+type LoginResponse struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
 type AuthService interface {
 	Register(ctx context.Context, email, password string) (*model.User, error)
-	Login(ctx context.Context, email, password string) (string, error)
+	Login(ctx context.Context, email, password string) (*LoginResponse, error)
 	GetMe(ctx context.Context, userID uint) (*model.User, error)
 }
 
@@ -50,22 +54,30 @@ func (s *authService) Register(ctx context.Context, email, password string) (*mo
 	return user, nil
 }
 
-func (s *authService) Login(ctx context.Context, email, password string) (string, error) {
+func (s *authService) Login(ctx context.Context, email, password string) (*LoginResponse, error) {
 	user, err := s.repo.FindByEmail(ctx, email)
 	if err != nil {
-		return "", errors.New("invalid credentials")
+		return nil, errors.New("invalid credentials")
 	}
 
 	if err := utils.CheckPassword(password, user.Password); err != nil {
-		return "", errors.New("invalid credentials")
+		return nil, errors.New("invalid credentials")
 	}
 
-	token, _, err := s.tokenMaker.CreateToken(user.ID, time.Duration(s.config.AccessTokenDuration)*time.Hour)
+	accessToken, _, err := s.tokenMaker.CreateToken(user.ID, s.config.AccessTokenDuration)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return token, nil
+	refreshToken, _, err := s.tokenMaker.CreateToken(user.ID, s.config.RefreshTokenDuration)
+	if err != nil {
+		return nil, err
+	}
+
+	return &LoginResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
 }
 
 func (s *authService) GetMe(ctx context.Context, userID uint) (*model.User, error) {

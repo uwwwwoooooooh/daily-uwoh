@@ -3,6 +3,8 @@ package token
 import (
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var (
@@ -11,14 +13,21 @@ var (
 )
 
 type Payload struct {
-	ID        uint      `json:"id"`
+	ID        uuid.UUID `json:"id"`
+	UserID    uint      `json:"user_id"`
 	IssuedAt  time.Time `json:"issued_at"`
 	ExpiredAt time.Time `json:"expired_at"`
 }
 
 func NewPayload(userID uint, duration time.Duration) (*Payload, error) {
+	tokenID, err := uuid.NewRandom()
+	if err != nil {
+		return nil, err
+	}
+
 	payload := &Payload{
-		ID:        userID,
+		ID:        tokenID,
+		UserID:    userID,
 		IssuedAt:  time.Now(),
 		ExpiredAt: time.Now().Add(duration),
 	}

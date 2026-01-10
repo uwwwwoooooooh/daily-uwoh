@@ -49,13 +49,13 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.service.Login(c.Request.Context(), req.Email, req.Password)
+	loginResponse, err := h.service.Login(c.Request.Context(), req.Email, req.Password)
 	if err != nil {
 		utils.SendError(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	utils.SendSuccess(c, http.StatusOK, gin.H{"token": token})
+	utils.SendSuccess(c, http.StatusOK, loginResponse)
 }
 
 func (h *AuthHandler) Me(c *gin.Context) {

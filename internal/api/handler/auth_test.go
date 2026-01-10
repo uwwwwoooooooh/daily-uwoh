@@ -64,8 +64,9 @@ func TestLogin(t *testing.T) {
 				err := json.Unmarshal(recorder.Body.Bytes(), &responseBody)
 				require.NoError(t, err)
 
-				// Expecting {"token": "..."}
-				require.NotEmpty(t, responseBody["token"])
+				// Expecting {"access_token": "...", "refresh_token": "..."}
+				require.NotEmpty(t, responseBody["access_token"])
+				require.NotEmpty(t, responseBody["refresh_token"])
 			},
 		},
 		{
@@ -134,8 +135,9 @@ func TestLogin(t *testing.T) {
 			}
 
 			config := utils.Config{
-				TokenSymmetricKey:   "12345678901234567890123456789012",
-				AccessTokenDuration: 24,
+				TokenSymmetricKey:    "12345678901234567890123456789012",
+				AccessTokenDuration:  15 * time.Minute,
+				RefreshTokenDuration: 7 * 24 * time.Hour,
 			}
 
 			tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
