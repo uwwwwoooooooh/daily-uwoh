@@ -22,11 +22,14 @@ tidy:
 sqlc:
 	sqlc generate
 
+dockerdb:
+	docker run --name uwohdb --network uwoh-network -p 5432:5432 -e POSTGRES_PASSWORD=shiratama -d postgres:18-alpine
+
 createdb:
-	docker exec -it postgres18 createdb --username=postgres --owner=postgres dailyuwoh
+	docker exec -it uwohdb createdb --username=root --owner=root dailyuwoh
 
 dropdb:
-	docker exec -it postgres18 dropdb dailyuwoh
+	docker exec -it uwohdb dropdb dailyuwoh
 
 migrateup:
 	migrate -path internal/db/migration -database "$(DATABASE_URL)" -verbose up
@@ -40,4 +43,4 @@ server:
 mock:
 	mockgen -package mockdb -destination internal/db/mock/store.go github.com/uwwwwoooooooh/daily-uwoh/internal/db/sqlc Store
 
-.PHONY: all build run test clean tidy sqlc createdb dropdb migrateup migratedown server mock
+.PHONY: all build run test clean tidy sqlc dockerdb dockerserver createdb dropdb migrateup migratedown server mock

@@ -36,11 +36,10 @@ DailyUwoh/
 │   ├── service/         # Core Business Logic
 │   ├── token/           # Token Management (PASETO)
 │   └── utils/           # Utilities & Config (.env loading, error handling)
-├── deployments/         # Docker & CI/CD configurations
-│   └── Dockerfile       # Docker build configuration
+├── Dockerfile           # Docker build configuration
 ├── .gitignore           # Git ignore rules
 ├── app.env              # Environment variables (Example)
-├── docker-compose.yml   # Docker services setup
+├── compose.yaml         # Docker services setup
 ├── go.mod               # Go module dependencies
 └── Makefile             # Development commands
 ```
@@ -70,8 +69,8 @@ DailyUwoh/
 2.  **Start PostgreSQL DB:**
     ```bash
     make postgres
-    # Or manually via docker-compose
-    docker-compose up -d postgres
+    # Or manually via docker compose
+    docker compose up -d postgres
     ```
 
 3.  **Create Database:**

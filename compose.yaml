@@ -1,0 +1,29 @@
+name: daily-uwoh
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgresql://root:shiratama@db:5432/dailyuwoh?sslmode=disable
+    depends_on:
+      - db
+    entrypoint: [ "/app/wait-for.sh", "db:5432", "--", "/app/start.sh" ]
+    command: [ "/app/daily-uwoh" ]
+    restart: unless-stopped
+
+  db:
+    image: postgres:18-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=shiratama
+      - POSTGRES_DB=dailyuwoh
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
