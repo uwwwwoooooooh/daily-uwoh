@@ -24,7 +24,7 @@ jobs:
         # Provide the password for postgres
         env:
           POSTGRES_DB: dailyuwoh
-          POSTGRES_USER: postgres
+          POSTGRES_USER: root
           POSTGRES_PASSWORD: shiratama
         ports:
           - 5432:5432
